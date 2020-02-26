@@ -1,4 +1,4 @@
-# KnowSerpro
+# <img src="C:\Users\mbacefor\Documents\uni7\git\knowSerpro\logoserpro.png" alt="logoserpro" style="zoom:25%;" /> KnowSerpro
 
 ## Motivação
 
