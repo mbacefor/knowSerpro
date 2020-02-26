@@ -12,23 +12,11 @@ Desenvolver um game de perguntas e respostas sobre o SERPRO onde as pessoas ganh
 
 O jogo terá 3 fases. Serão três grupos de perguntas sendo que ao final tem um jogo pinball.
 
-### Fase 1
-
-Três Perguntas simples que ganha uma bola para cada pergunta certa.
-
-Para cada pergunta certa terá uma bola para jogar no pinball.
-
-### Fase 2
-
-Três Perguntas média que ganha uma bola para cada pergunta certa.
-
-Para cada pergunta certa terá uma bola para jogar no pinball.
-
-### Fase 3
-
-Três Perguntas complexas que ganha uma bola para cada pergunta certa.
-
-Para cada pergunta certa terá uma bola para jogar no pinball.
+| Fases | Descrição                                                    |
+| :---: | ------------------------------------------------------------ |
+|   1   | Três perguntas simples que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
+|   2   | Três perguntas média que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
+|   3   | Três perguntas complexas que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
 
 ## Esquema de Pontuação
 
