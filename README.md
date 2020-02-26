@@ -1,4 +1,4 @@
-# <img src="logoserpro.png" alt="logoserpro" style="zoom:25%;" /> KnowSerpro
+# <img src="logo125.png" alt="logoserpro" /> KnowSerpro
 
 ## Motivação
 
