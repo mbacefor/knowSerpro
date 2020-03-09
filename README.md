@@ -8,6 +8,10 @@ Desenvolver um game que permita conhecer melhor o SERPRO e que seja baseado The 
 
 Desenvolver um game de perguntas e respostas sobre o SERPRO onde as pessoas ganhe bolas para jogar em um pinball onde o jogador ganhe pontos.
 
+## Valor Agregado
+
+A sociedade compreender a importância do SERPRO para o Brasil.
+
 ## Fases
 
 O jogo terá 3 fases. Serão três grupos de perguntas sendo que ao final tem um jogo pinball.
