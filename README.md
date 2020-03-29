@@ -26,5 +26,20 @@ O jogo terá 3 fases. Serão três grupos de perguntas sendo que ao final tem um
 
 No pinball haverá locais onde ganha pontos.
 
-## Protótipos de Tela
+## Requisitos
+
+#### Funcionalidades
+
+1. ##### Exibir tela de abertura com opção de menu
+
+2. **Exibir tela de quiz de perguntas**
+
+3. **Exibir tela de pinball**
+
+4. Exibir tela de ranking
+
+
+
+### Protótipos de Tela
+
 Criado
