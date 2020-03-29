@@ -1,7 +1,7 @@
 {
-  "name": "phaser3-project-template-3",
+  "name": "KnowSerpro",
   "version": "1.0.0",
-  "description": "A Phaser 3 Project Template",
+  "description": "KnowSerpro",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://scottwestover@bitbucket.org/creativerendering/phaser3-template.git"
+    "url": "git+https://github.com/mbacefor/knowSerpro.git"
   },
   "license": "MIT",
   "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
   "bugs": {
-    "url": "https://github.com/photonstorm/phaser3-project-template/issues"
+    "url": "https://github.com/mbacefor/knowSerpro/issues"
   },
-  "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
+  "homepage": "https://github.com/mbacefor/knowSerpro",
   "devDependencies": {
     "webpack-dev-server": "^2.11.0",
     "webpack": "^3.4.1",
