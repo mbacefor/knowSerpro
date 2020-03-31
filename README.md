@@ -43,7 +43,11 @@ No pinball haverá locais onde ganha pontos.
 
    A aplicação exibe uma tela de pinball e disponibiliza uma quantidade de bola de acordo com a quantidade de respostas respondidas corretamente.
 
-4. **Exibir tela de ranking**
+4. **Exibir tela de help**
+
+   A aplicação vai exibir a tela de help.
+
+5. **Exibir tela de ranking**
 
    A aplicação exibe uma tela contendo os pontos obtidos pelo jogar e disponibiliza um ranking.
 
