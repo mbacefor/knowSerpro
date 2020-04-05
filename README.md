@@ -16,11 +16,11 @@ A sociedade compreender a importância do SERPRO para o Brasil.
 
 O jogo terá 3 fases. Serão três grupos de perguntas sendo que ao final tem um jogo pinball.
 
-1. | Fases | Descrição                                                    |
-   | :---: | ------------------------------------------------------------ |
-   |   1   | Três perguntas simples que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
-   |   2   | Três perguntas média que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
-   |   3   | Três perguntas complexas que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
+| Fases | Descrição                                                    |
+| :---: | ------------------------------------------------------------ |
+|   1   | Três perguntas simples que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
+|   2   | Três perguntas média que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
+|   3   | Três perguntas complexas que ganha uma bola para cada pergunta certa. Para cada pergunta certa terá uma bola para jogar no pinball. |
 
 
 ## Esquema de Pontuação
@@ -43,13 +43,13 @@ No pinball haverá locais onde ganha pontos.
 
    A aplicação exibe uma tela de pinball e disponibiliza uma quantidade de bola de acordo com a quantidade de respostas respondidas corretamente.
 
-4. **Exibir tela de help**
+4. **Exibir tela de opções**
 
-   A aplicação vai exibir a tela de help.
+   A aplicação vai exibir a tela de opções.
 
-5. **Exibir tela de ranking**
+5. **Exibir tela de Créditos**
 
-   A aplicação exibe uma tela contendo os pontos obtidos pelo jogar e disponibiliza um ranking.
+   A aplicação exibe uma tela de créditos.
 
    
 
@@ -59,4 +59,4 @@ No pinball haverá locais onde ganha pontos.
 
 ### Protótipos de Tela
 
-Criado
+![fluxoTela](fluxoTela.png)
