@@ -7,8 +7,9 @@ export default class CreditsScene extends Phaser.Scene {
   }
 
   create () {
-    this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
-    this.madeByText = this.add.text(0, 0, 'Created By: Placeholder', { fontSize: '26px', fill: '#fff' });
+    this.creditsText = this.add.text(0, 0, 'Créditos', { fontSize: '32px', fill: '#fff' });
+    this.madeByText = this.add.text(0, 0, 'Desenvolvido por:\n\n Marcelo Bezerra de Alcântara \n\n Disciplina de Estágio I\n\nSI\n\nUNI7\n\n2020', { fontSize: '26px', fill: '#fff' });
+    this.madeByText.setAlign('center');
     this.zone = this.add.zone(config.width/2, config.height/2, config.width, config.height);
 
     Phaser.Display.Align.In.Center(

@@ -10,8 +10,17 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   preload () {
+
+
+    //  Load the Google WebFont Loader script
+    //this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
+    //adiciona backgroud
+    this.add.image(400,300,"background");
+
+
     // add logo image
-    this.add.image(400, 200, 'logo');
+    this.add.image(350, 150, 'logo');
 
     // display progress bar
     var progressBar = this.add.graphics();
@@ -24,7 +33,7 @@ export default class PreloaderScene extends Phaser.Scene {
     var loadingText = this.make.text({
       x: width / 2,
       y: height / 2 - 50,
-      text: 'Loading...',
+      text: 'Carregando...',
       style: {
         font: '20px monospace',
         fill: '#ffffff'
@@ -64,7 +73,7 @@ export default class PreloaderScene extends Phaser.Scene {
 
     // update file progress text
     this.load.on('fileprogress', function (file) {
-      assetText.setText('Loading asset: ' + file.key);
+      assetText.setText('Carregando recursos: ' + file.key);
     });
 
     // remove progress bar when complete
@@ -77,9 +86,11 @@ export default class PreloaderScene extends Phaser.Scene {
       this.ready();
     }.bind(this));
 
-    this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
+    this.timedEvent = this.time.delayedCall(6000, this.ready, [], this);
 
     // load assets needed in our game
+
+    this.load.image('fundoGame', 'assets/fundoPadrao.png');
     this.load.image('blueButton1', 'assets/ui/blue_button02.png');
     this.load.image('blueButton2', 'assets/ui/blue_button03.png');
     this.load.image('phaserLogo', 'assets/logo.png');

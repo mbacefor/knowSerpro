@@ -213,7 +213,8 @@ export default class GameScene extends Phaser.Scene {
   
   update() {
     if (gameOver) {
-      this.scene.start('Boot');
+      this.scene.stop('Game');
+      this.scene.start('Title');
     }
   
     if (cursors.left.isDown) {
