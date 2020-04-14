@@ -50,7 +50,6 @@ No pinball haverá locais onde ganha pontos.
 5. **Exibir tela de Créditos**
 
    A aplicação exibe uma tela de créditos.
-
    
 
 #### Personas
