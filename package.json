@@ -3,14 +3,29 @@
   "version": "1.0.0",
   "description": "KnowSerpro",
   "main": "src/index.js",
+  "engines": {
+    "node": "10.8.0",
+    "npm": "6.3.0"
+  },
   "scripts": {
-    "build": "webpack --config webpack/prod.js ",
-    "start": "webpack-dev-server --config webpack/base.js --open"
+    "dev": "webpack-dev-server --config webpack/base.js --open",
+    "devTest": "webpack --config webpack.config.dev.js",
+    "heroku-postbuild": "webpack --config webpack/prod.js",
+    "heroku": "webpack --config webpack/prod.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mbacefor/knowSerpro.git"
   },
+  "keywords": [
+    "Phaser3",
+    "Heroku",
+    "ES6",
+    "Babel",
+    "Webpack4"
+  ],
   "license": "MIT",
   "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
   "bugs": {
@@ -32,6 +47,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "phaser": "^3.22.0"
   }
 }
