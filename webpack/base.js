@@ -9,36 +9,28 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+          /* babel */
+          test: /\.js$/,
+          loader: 'babel-loader',
+          include: /src/,
+          exclude: /node_modules/,
+          options: {
+            compact: true
+          }
       },
       {
         test: [/\.vert$/, /\.frag$/],
         use: "raw-loader"
       },
       {
-        test: /\.(gif|png|jpe?g|svg|xml)$/i,
+        test: /\.(gif|png|jpe?g|svg|xml|mp3)$/i,
         use: "file-loader"
-      },
-      {
-        /* images */
-        test: /\.(jpe?g|png|gif)$/,
-        loader: 'file-loader',
-        include: /assets/,
-        exclude: /node_modules/,
-        options: {
-          name: '[path][name].[ext]'
-        }
       }
     ]
   },
   plugins: [
     new CleanWebpackPlugin({
-      root: path.resolve(__dirname, "../")
-    }),
+         }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true)

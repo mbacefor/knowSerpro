@@ -1,4 +1,7 @@
 import 'phaser';
+import logo from '../../assets/logo-serpro_display.png';
+import background from '../../assets/background.png';
+
 
 export default class BootScene extends Phaser.Scene {
   constructor () {
@@ -7,8 +10,8 @@ export default class BootScene extends Phaser.Scene {
 
   preload () {
     //Carregar imagens da tela pre-load
-    this.load.image('logo', 'assets/logo-serpro_display.png');
-    this.load.image('background', 'assets/background.png');
+    this.load.image('logo', logo);
+    this.load.image('background', background);
 
   }
 

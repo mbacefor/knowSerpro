@@ -16,11 +16,20 @@ module.exports = merge(base, {
   optimization: {
     minimizer: [
       new TerserPlugin({
+        include: /assets/,
+        sourceMap: true,
         terserOptions: {
           output: {
-            comments: false
+            comments: true
           }
-        }
+        },chunkFilter: (chunk) => {
+          // Exclude uglification for the `vendor` chunk
+          if (chunk.name === 'vendor') {
+            return false;
+          }
+
+          return true;
+        },
       })
     ]
   }
