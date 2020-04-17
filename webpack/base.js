@@ -22,6 +22,16 @@ module.exports = {
       {
         test: /\.(gif|png|jpe?g|svg|xml)$/i,
         use: "file-loader"
+      },
+      {
+        /* images */
+        test: /\.(jpe?g|png|gif)$/,
+        loader: 'file-loader',
+        include: /assets/,
+        exclude: /node_modules/,
+        options: {
+          name: '[path][name].[ext]'
+        }
       }
     ]
   },

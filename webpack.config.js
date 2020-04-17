@@ -18,6 +18,16 @@ module.exports = {
           {
             test: [ /\.vert$/, /\.frag$/ ],
             use: 'raw-loader'
+          },
+          {
+            /* images */
+            test: /\.(jpe?g|png|gif)$/,
+            loader: 'file-loader',
+            include: [ fontsPath, imagesPath, videosPath ],
+            exclude: nm,
+            options: {
+              name: '[path][name].[ext]'
+            }
           }
         ]
     },
