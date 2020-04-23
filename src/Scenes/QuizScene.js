@@ -19,6 +19,14 @@ export default class QuizScene extends Phaser.Scene {
 
   create() {
 
+    this.model = this.sys.game.globals.model;
+    //var nomes = ['maria', 'josé', 'joão'];
+    this.model.quiz.forEach(function (quiz) {
+      console.log(quiz.pergunta);
+      console.log(quiz.resposta);
+      console.log(quiz.opcoes);
+    });
+
     var dialog1 = this.rexUI.add.dialog(
       {
         x: 400,
