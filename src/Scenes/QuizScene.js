@@ -8,7 +8,7 @@ export default class QuizScene extends Phaser.Scene {
     super('QuizScene')
     this.quizFase = [];
     this.numeroTentativas = 0
-    const quantidadePerguntas = 1;
+    this.quantidadePerguntas = 3;
   }
 
   preload() {
@@ -19,17 +19,26 @@ export default class QuizScene extends Phaser.Scene {
     });
   }
 
+
+/**
+ * Escolhe a perguntas que serão utilizados no quiz
+ */
   escolhePerguntas() {
     this.model = this.sys.game.globals.model;
     var quizSelecao = null;
-    this.model.quiz.forEach(function (quiz) {
-      quizSelecao = quiz;
-    });
-    this.quizFase.push(quizSelecao);
+    var choiceTextArray = this.model.quiz;
+    for (var i = 0; i < this.quantidadePerguntas && choiceTextArray != null && choiceTextArray.length > 0; i++) {
+      let choiceQuiz = choiceTextArray[0];
+      if (choiceQuiz != null) {
+        choiceTextArray.shift();
+        this.quizFase.push(choiceQuiz);
+      } else {
+        exit()
+      }
+    }
   }
 
   create() {
-
     this.add.image(400, 300, 'fundoGame');
     this.escolhePerguntas();
     this.createDialog();
@@ -37,9 +46,12 @@ export default class QuizScene extends Phaser.Scene {
 
   update() { }
 
+/**
+ * Cria a dialog
+ */
   createDialog() {
 
-    var quizModel = this.quizFase[0];
+    var quizModel = this.quizFase[this.numeroTentativas];
 
     var dialog = this.rexUI.add.dialog(
       {
@@ -107,6 +119,7 @@ export default class QuizScene extends Phaser.Scene {
     dialog
       .on('button.click', function (button, groupName, index) {
         this.print.text += index + ': ' + button.text + '\n';
+        this.verificaReposta(button.text);
       }, this)
       .on('button.over', function (button, groupName, index) {
         button.getElement('background').setStrokeStyle(1, 0xffffff);
@@ -114,6 +127,21 @@ export default class QuizScene extends Phaser.Scene {
       .on('button.out', function (button, groupName, index) {
         button.getElement('background').setStrokeStyle();
       });
+  }
+
+  /**
+   * 
+   * @param {*} button 
+   */
+  verificaReposta(respostaEscolhida){
+    let quizmodel = this.quizFase[this.numeroTentativas]
+    if(respostaEscolhida == quizmodel.resposta){
+      this.print.text += 'Acertou \n';
+    } else{
+      this.print.text += 'Errou \n'
+    }
+    this.numeroTentativas++;
+    this.createDialog();
   }
 
 
