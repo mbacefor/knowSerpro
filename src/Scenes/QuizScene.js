@@ -69,9 +69,9 @@ export default class QuizScene extends Phaser.Scene {
             bottom: 20,
         },
     })
-        .show('Hello world')
-        .show('Phaser 3 is good')
-        .show('See you next time')
+        //.show('Hello world')
+        //.show('Phaser 3 is good')
+        //.show('See you next time')
 }
 
 /**
