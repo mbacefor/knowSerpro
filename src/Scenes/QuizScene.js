@@ -10,6 +10,7 @@ export default class QuizScene extends Phaser.Scene {
     this.numeroTentativas = 0
     this.quantidadePerguntas = 3;
     this.dialog = undefined;
+    this.toast = undefined;
   }
 
   preload() {
@@ -42,10 +43,36 @@ export default class QuizScene extends Phaser.Scene {
   create() {
     this.add.image(400, 300, 'fundoGame');
     this.escolhePerguntas();
+    this.createTextoMensagem();
     this.createDialog();
   }
 
   update() { }
+
+
+/**
+ * 
+ */
+  createTextoMensagem() {
+    this.toast = this.rexUI.add.toast({
+        x: 400,
+        y: 40,
+
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x1565c0),
+        text: this.add.text(0, 0, '', {
+            fontSize: '24px'
+        }),
+        space: {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20,
+        },
+    })
+        .show('Hello world')
+        .show('Phaser 3 is good')
+        .show('See you next time')
+}
 
 /**
  * Cria a dialog
@@ -132,13 +159,15 @@ export default class QuizScene extends Phaser.Scene {
 
   /**
    * 
-   * @param {*} button 
+   * @param {*} respostaEscolhida 
    */
   verificaReposta(respostaEscolhida){
     let quizmodel = this.quizFase[this.numeroTentativas]
     if(respostaEscolhida == quizmodel.resposta){
-      this.print.text += 'Acertou \n';
+      this.toast.show('Acertou')
+      //this.print.text += 'Acertou \n';
     } else{
+      this.toast.show('Errou')
       this.print.text += 'Errou \n'
     }
     this.numeroTentativas++;
