@@ -1,3 +1,6 @@
+/**
+ * Classe que representa uma pergunta a ser feita no quiz.
+ */
 export default class QuizModel {
   constructor(pergunta,resposta,opcoes) {
     this._pergunta = pergunta;
