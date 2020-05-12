@@ -7,6 +7,7 @@ import TitleScene from './Scenes/TitleScene';
 import OptionsScene from './Scenes/OptionsScene';
 import CreditsScene from './Scenes/CreditsScene';
 import QuizScene from './Scenes/QuizScene';
+import PinballScene from './Scenes/PinballScene'
 import Model from './Model/Model';
 
 class Game extends Phaser.Game {
@@ -21,6 +22,7 @@ class Game extends Phaser.Game {
     this.scene.add('Credits', CreditsScene);
     this.scene.add('Game', GameScene);
     this.scene.add('QuizScene', QuizScene);
+    this.scene.add('PinballScene', PinballScene);
     this.scene.start('Boot');
   }
 }
