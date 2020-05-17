@@ -150,7 +150,7 @@ export default class PinballScene extends Phaser.Scene {
 		//  32px radius on the corners
 		var graphics = this.add.graphics();
 		graphics.fillStyle(color, 1);
-		var poly = graphics.fillRoundedRect(-width/2, -height/2, width, height, 10);
+		var poly = graphics.fillRoundedRect(-width / 2, -height / 2, width, height, 10);
 		//var poly = this.add.rectangle(x, y, width, height, color);
 		return this.matter.add.gameObject(poly, {
 			isStatic: true,
@@ -261,8 +261,15 @@ export default class PinballScene extends Phaser.Scene {
 	stopper(x, y, side, position) {
 		// determine which paddle composite to interact with
 		let attracteeLabel = (side === 'left') ? 'paddleLeftComp' : 'paddleRightComp';
-
-		return Matter.Bodies.circle(x, y, 40, {
+		var poly = this.add.circle(x, y, 40, COLOR.BUMPER);
+		return this.matter.add.gameObject(poly, {
+			shape: {
+				type: 'circle',
+				x: x,
+				y: y,
+				radius: 25,
+				flagInternal: false
+			},
 			isStatic: true,
 			render: {
 				visible: false,
@@ -289,18 +296,63 @@ export default class PinballScene extends Phaser.Scene {
 				]
 			}
 		});
+		// return Matter.Bodies.circle(x, y, 40, {
+		// 	isStatic: true,
+		// 	render: {
+		// 		visible: false,
+		// 	},
+		// 	collisionFilter: {
+		// 		group: stopperGroup
+		// 	},
+		// 	plugin: {
+		// 		attractors: [
+		// 			// stopper is always a, other body is b
+		// 			function (a, b) {
+		// 				if (b.label === attracteeLabel) {
+		// 					let isPaddleUp = (side === 'left') ? isLeftPaddleUp : isRightPaddleUp;
+		// 					let isPullingUp = (position === 'up' && isPaddleUp);
+		// 					let isPullingDown = (position === 'down' && !isPaddleUp);
+		// 					if (isPullingUp || isPullingDown) {
+		// 						return {
+		// 							x: (a.position.x - b.position.x) * PADDLE_PULL,
+		// 							y: (a.position.y - b.position.y) * PADDLE_PULL,
+		// 						};
+		// 					}
+		// 				}
+		// 			}
+		// 		]
+		// 	}
+		// });
 	}
 
 	// contact with these bodies causes pinball to be relaunched
 	reset(x, width) {
 		//return Matter.Bodies.rectangle(x, 781, width, 2, {
-		return engine.bodies.rectangle(x, 781, width, 2, {
-			label: 'reset',
+		var poly = this.add.rectangle(x, 781, width, 2, 0xfff);
+		return this.matter.add.gameObject(poly, {
 			isStatic: true,
+			shape: {
+				type: 'rectangle',
+				x: x,
+				y: 781,
+				width: width,
+				height: 2,
+				flagInternal: false
+			},
 			render: {
-				fillStyle: '#fff'
+				fillStyle: 0xfff,
+				lineColor: 0xfff
 			}
-		});
+		},
+		);
+
+		// return engine.bodies.rectangle(x, 781, width, 2, {
+		// 	label: 'reset',
+		// 	isStatic: true,
+		// 	render: {
+		// 		fillStyle: '#fff'
+		// 	}
+		// });
 	}
 
 	createStaticBodies() {
@@ -360,13 +412,167 @@ export default class PinballScene extends Phaser.Scene {
 		]);
 	}
 
+	createPaddles() {
+		// these bodies keep paddle swings contained, but allow the ball to pass through
+		leftUpStopper = this.stopper(160, 591, 'left', 'up');
+		leftDownStopper = this.stopper(140, 743, 'left', 'down');
+		rightUpStopper = this.stopper(290, 591, 'right', 'up');
+		rightDownStopper = this.stopper(310, 743, 'right', 'down');
+		//Phaser.Physics.Matter.Matter.World.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
+		engine.world.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
+		// this group lets paddle pieces overlap each other
+		let paddleGroup = Phaser.Physics.Matter.Matter.Body.nextGroup(true);
+
+		// Left paddle mechanism
+		let paddleLeft = {};
+		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
+		paddleLeft.paddle =  this.matter.bodies.trapezoid(170, 660, 20, 80, 0.33, {
+			label: 'paddleLeft',
+			angle: 1.57,
+			chamfer: {},
+			render: {
+				fillStyle: COLOR.PADDLE,
+				fillColor: COLOR.PADDLE,
+				lineColor: COLOR.PADDLE
+
+			}
+		});
+		paddleLeft.brick = this.matter.bodies.rectangle(172, 672, 40, 80, {
+			angle: 1.62,
+			chamfer: {},
+			render: {
+				visible: false
+			}
+		});
+		paddleLeft.comp = this.matter.body.create({
+			label: 'paddleLeftComp',
+			parts: [paddleLeft.paddle, paddleLeft.brick]
+		});
+		paddleLeft.hinge = this.matter.bodies.circle(142, 660, 5, {
+			isStatic: true,
+			render: {
+				visible: false
+			}
+		});
+		Object.values(paddleLeft).forEach((piece) => {
+			piece.collisionFilter.group = paddleGroup
+		});
+		//paddleLeft.con = Phaser.Physics.Matter.Matter.Constraint.create({
+			paddleLeft.con = this.matter.constraint.create({
+			bodyA: paddleLeft.comp,
+			pointA: { x: -29.5, y: -8.5 },
+			bodyB: paddleLeft.hinge,
+			length: 0,
+			stiffness: 0
+		});
+		//Phaser.Physics.Matter.Matter.World.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
+		engine.world.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
+		//Phaser.Physics.Matter.Matter.Body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+		engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+
+		// right paddle mechanism
+		let paddleRight = {};
+		paddleRight.paddle = this.matter.bodies.trapezoid(280, 660, 20, 80, 0.33, {
+			label: 'paddleRight',
+			angle: -1.57,
+			chamfer: {},
+			render: {
+				fillStyle: COLOR.PADDLE,
+				fillColor: COLOR.PADDLE
+
+			}
+		});
+		paddleRight.brick = this.matter.bodies.rectangle(278, 672, 40, 80, {
+			angle: -1.62,
+			chamfer: {},
+			render: {
+				visible: false
+			}
+		});
+		paddleRight.comp = this.matter.body.create({
+			label: 'paddleRightComp',
+			parts: [paddleRight.paddle, paddleRight.brick]
+		});
+		paddleRight.hinge = this.matter.bodies.circle(308, 660, 5, {
+			isStatic: true,
+			render: {
+				visible: false
+			}
+		});
+		Object.values(paddleRight).forEach((piece) => {
+			piece.collisionFilter.group = paddleGroup
+		});
+		paddleRight.con = this.matter.constraint.create({
+			bodyA: paddleRight.comp,
+			pointA: { x: 29.5, y: -8.5 },
+			bodyB: paddleRight.hinge,
+			length: 0,
+			stiffness: 0
+		});
+		//Phaser.Physics.Matter.Matter.World.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
+		engine.world.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
+		//Phaser.Physics.Matter.Matter.Body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
+		engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
+	}
+	createPinball() {
+		// x/y are set to when pinball is launched
+		//pinball = Phaser.Physics.Matter.Matter.Bodies.circle(0, 0, 14, {
+			pinball = engine.bodies.circle(0, 0, 14, {
+			label: 'pinball',
+			collisionFilter: {
+				group: stopperGroup
+			},
+			render: {
+				fillStyle: COLOR.PINBALL,
+				fillColor: COLOR.PINBALL
+			}
+		});
+		//Phaser.Physics.Matter.Matter.World.add(world, pinball);
+		engine.world.add(world, pinball);
+		this.launchPinball();
+	}
+
+	launchPinball() {
+		this.updateScore(0);
+		//Phaser.Physics.Matter.Matter.Body.setPosition(pinball, { x: 465, y: 765 });
+		engine.body.setPosition(pinball, { x: 465, y: 765 });
+		//Phaser.Physics.Matter.Matter.Body.setVelocity(pinball, { x: 0, y: -25 + rand(-2, 2) });
+		engine.body.setVelocity(pinball, { x: 0, y: -25 + this.rand(-2, 2) });
+		//Phaser.Physics.Matter.Matter.Body.setAngularVelocity(pinball, 0);
+		engine.body.setAngularVelocity(pinball, 0);
+	}
+
+	pingBumper(bumper) {
+		this.updateScore(currentScore + 10);
+
+		// flash color
+		bumper.render.fillStyle = COLOR.BUMPER_LIT;
+		setTimeout(function() {
+			bumper.render.fillStyle = COLOR.BUMPER;
+		}, 100);
+	}
+
+	updateScore(newCurrentScore) {
+		currentScore = newCurrentScore;
+		//$currentScore.text(currentScore);
+
+		highScore = Math.max(currentScore, highScore);
+		//$highScore.text(highScore);
+	}
+
+	// matter.js has a built in random range function, but it is deterministic
+	rand(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+
 
 	create() {
 		//var graphics = this.add.graphics();
-
-
 		this.iniciar();
 		this.createStaticBodies();
+		this.createPaddles();
+		this.createPinball();
+
 	}
 
 	update() {
