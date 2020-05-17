@@ -3,8 +3,8 @@ import QuizModel from './QuizModel';
 
 export default class Model {
   constructor() {
-    this._soundOn = true;
-    this._musicOn = true;
+    this._soundOn = false;
+    this._musicOn = false;
     this._bgMusicPlaying = false;
     this._quiz = [new QuizModel('Qual o ano de criação do SERPRO?', '1964', ['2001', '1985', '1973','1964','1880'])
                   ,new QuizModel('A qual ministério o SERPRO é vinculado?', 'Ministério da Economia', ['Ministério da Economia', 'Ministério da Justiça', 'Ministério da Educação','Ministério da Informação'])

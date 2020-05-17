@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500px" height="800px" viewBox="0.0 0.0 500 800" content="&lt;mxfile host=&quot;Electron&quot; modified=&quot;2020-05-16T12:32:52.326Z&quot; agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/12.9.3 Chrome/80.0.3987.158 Electron/8.2.0 Safari/537.36&quot; etag=&quot;FEdQb3wgNaKHZhcCqFZE&quot; version=&quot;12.9.3&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;zdPu1U8sSykCvT7Ejxc3&quot; name=&quot;Page-1&quot;&gt;zZRRT4MwEIB/DY9LgCKOV3FzLzPqTEx86+hJG4GSrhPmr/eQY0C2ZRo18Yn2u7u2fD1wWJzXN4aXcqkFZI7vitph147ve2Hk46Mhu5ZE02kLUqMEJfVgpd6BoEt0qwRsRolW68yqcgwTXRSQ2BHjxuhqnPais/GuJU/hAKwSnh3SJyWsbOmF6/Z8ASqVtPO0C+S8yyWwkVzoaoDYzGGx0dq2o7yOIWvcdVrauvmJ6P5cBgr7lQJXLhZ35Zo9p/Hjfbh+XT7Mbye0yhvPtvS+dFi76wTguctmWGvjsKtKKgurkicNqvDKkUmbZzjzcGi05VbpAqeTyEVQglE5WDBNjSpSDISIaVswFuqT7+PtLWF3gcZlzA5TqCAISCw11iTo1Ff9PXmdfTm4o6iDnHoj3S/e+8MBKfyGTv+8TqO3hYBmEfe8zp9oGlgIjki4jP5KAvtHEqggCg9b47ek4LT/iD9jgz8hm30A&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color:#fff">
+    <defs/>
+    <g>
+        <rect x="0" y="0" width="40" height="790" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+        <rect x="960" y="0" width="40" height="790" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+        <polygon id="DOME" points="0 0 0 250 19 250 20 231.9 25.7 196.1 36.9 161.7 53.3 129.5 74.6 100.2 100.2 74.6 129.5 53.3 161.7 36.9 196.1 25.7 231.9 20 268.1 20 303.9 25.7 338.3 36.9 370.5 53.3 399.8 74.6 425.4 100.2 446.7 129.5 463.1 161.7 474.3 196.1 480 231.9 480 250 500 250 500 0 0 0" fill="#495057" stroke="#000000" pointer-events="all"/>
+        <polygon id="DROP_LEFT" points="0 0 20 0 70 100 20 150 0 150 0 0" fill="#495057" stroke="#000000" pointer-events="all"/>
+        <polygon id="DROP_RIGHT" points="50 0 68 0 68 150 50 150 0 100 50 0" fill="#495057" stroke="#000000" pointer-events="all"/>
+        <polygon id="APRON_LEFT" points="0 0 180 120 0 120 0 0" fill="#495057" stroke="#000000" pointer-events="all"/>
+    </g>
+    <g>
+        <polygon id="APRON_RIGHT" points="180 0 180 120 0 120 180 0" fill="#495057" stroke="#000000" pointer-events="all"/>
+    </g>
+</svg>
