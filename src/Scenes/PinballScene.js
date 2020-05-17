@@ -426,7 +426,7 @@ export default class PinballScene extends Phaser.Scene {
 		// Left paddle mechanism
 		let paddleLeft = {};
 		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
-		paddleLeft.paddle =  this.matter.bodies.trapezoid(170, 660, 20, 80, 0.33, {
+		paddleLeft.paddle =  this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
 			label: 'paddleLeft',
 			angle: 1.57,
 			chamfer: {},
@@ -434,24 +434,23 @@ export default class PinballScene extends Phaser.Scene {
 				fillStyle: COLOR.PADDLE,
 				fillColor: COLOR.PADDLE,
 				lineColor: COLOR.PADDLE
-
 			}
 		});
-		paddleLeft.brick = this.matter.bodies.rectangle(172, 672, 40, 80, {
+		paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
 			angle: 1.62,
 			chamfer: {},
 			render: {
-				visible: false
+				visible: true
 			}
 		});
 		paddleLeft.comp = this.matter.body.create({
 			label: 'paddleLeftComp',
 			parts: [paddleLeft.paddle, paddleLeft.brick]
 		});
-		paddleLeft.hinge = this.matter.bodies.circle(142, 660, 5, {
+		paddleLeft.hinge = this.matter.add.circle(142, 660, 5, {
 			isStatic: true,
 			render: {
-				visible: false
+				visible: true
 			}
 		});
 		Object.values(paddleLeft).forEach((piece) => {
@@ -468,21 +467,22 @@ export default class PinballScene extends Phaser.Scene {
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
 		engine.world.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
-		engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+		//engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
 
 		// right paddle mechanism
 		let paddleRight = {};
-		paddleRight.paddle = this.matter.bodies.trapezoid(280, 660, 20, 80, 0.33, {
+		paddleRight.paddle = this.matter.add.trapezoid(280, 660, 20, 80, 0.33, {
 			label: 'paddleRight',
 			angle: -1.57,
 			chamfer: {},
 			render: {
 				fillStyle: COLOR.PADDLE,
-				fillColor: COLOR.PADDLE
+				fillColor: COLOR.PADDLE,
+				lineColor: COLOR.PADDLE
 
 			}
 		});
-		paddleRight.brick = this.matter.bodies.rectangle(278, 672, 40, 80, {
+		paddleRight.brick = this.matter.add.rectangle(278, 672, 40, 80, {
 			angle: -1.62,
 			chamfer: {},
 			render: {
@@ -493,7 +493,7 @@ export default class PinballScene extends Phaser.Scene {
 			label: 'paddleRightComp',
 			parts: [paddleRight.paddle, paddleRight.brick]
 		});
-		paddleRight.hinge = this.matter.bodies.circle(308, 660, 5, {
+		paddleRight.hinge = this.matter.add.circle(308, 660, 5, {
 			isStatic: true,
 			render: {
 				visible: false
@@ -512,19 +512,20 @@ export default class PinballScene extends Phaser.Scene {
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		engine.world.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
-		engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
+		//engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
 	}
 	createPinball() {
 		// x/y are set to when pinball is launched
 		//pinball = Phaser.Physics.Matter.Matter.Bodies.circle(0, 0, 14, {
-			pinball = engine.bodies.circle(0, 0, 14, {
+			pinball = engine.add.circle(0, 0, 14, {
 			label: 'pinball',
 			collisionFilter: {
 				group: stopperGroup
 			},
 			render: {
 				fillStyle: COLOR.PINBALL,
-				fillColor: COLOR.PINBALL
+				fillColor: COLOR.PINBALL,
+				lineColor: COLOR.PINBALL
 			}
 		});
 		//Phaser.Physics.Matter.Matter.World.add(world, pinball);
@@ -572,7 +573,6 @@ export default class PinballScene extends Phaser.Scene {
 		this.createStaticBodies();
 		this.createPaddles();
 		this.createPinball();
-
 	}
 
 	update() {
