@@ -420,6 +420,7 @@ export default class PinballScene extends Phaser.Scene {
 		rightDownStopper = this.stopper(310, 743, 'right', 'down');
 		//Phaser.Physics.Matter.Matter.World.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
 		engine.world.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
+		
 		// this group lets paddle pieces overlap each other
 		let paddleGroup = Phaser.Physics.Matter.Matter.Body.nextGroup(true);
 
@@ -427,6 +428,7 @@ export default class PinballScene extends Phaser.Scene {
 		let paddleLeft = {};
 		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
 		paddleLeft.paddle =  this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
+			isStatic: true,
 			label: 'paddleLeft',
 			angle: 1.57,
 			chamfer: {},
@@ -436,14 +438,17 @@ export default class PinballScene extends Phaser.Scene {
 				lineColor: COLOR.PADDLE
 			}
 		});
+		
 		paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
+			isStatic: true,
 			angle: 1.62,
 			chamfer: {},
 			render: {
-				visible: true
+				visible: false
 			}
 		});
 		paddleLeft.comp = this.matter.body.create({
+			isStatic: true,
 			label: 'paddleLeftComp',
 			parts: [paddleLeft.paddle, paddleLeft.brick]
 		});
@@ -466,12 +471,14 @@ export default class PinballScene extends Phaser.Scene {
 		});
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
 		engine.world.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
+		//this.scene.physics.add.existing(paddleLeft.comp);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
-		//engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+		engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
 
 		// right paddle mechanism
 		let paddleRight = {};
 		paddleRight.paddle = this.matter.add.trapezoid(280, 660, 20, 80, 0.33, {
+			isStatic: true,
 			label: 'paddleRight',
 			angle: -1.57,
 			chamfer: {},
@@ -479,10 +486,10 @@ export default class PinballScene extends Phaser.Scene {
 				fillStyle: COLOR.PADDLE,
 				fillColor: COLOR.PADDLE,
 				lineColor: COLOR.PADDLE
-
 			}
 		});
 		paddleRight.brick = this.matter.add.rectangle(278, 672, 40, 80, {
+			isStatic: true,
 			angle: -1.62,
 			chamfer: {},
 			render: {
@@ -490,13 +497,14 @@ export default class PinballScene extends Phaser.Scene {
 			}
 		});
 		paddleRight.comp = this.matter.body.create({
+			isStatic: true,
 			label: 'paddleRightComp',
 			parts: [paddleRight.paddle, paddleRight.brick]
 		});
 		paddleRight.hinge = this.matter.add.circle(308, 660, 5, {
 			isStatic: true,
 			render: {
-				visible: false
+				visible: true
 			}
 		});
 		Object.values(paddleRight).forEach((piece) => {
@@ -512,7 +520,7 @@ export default class PinballScene extends Phaser.Scene {
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		engine.world.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
-		//engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
+		engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
 	}
 	createPinball() {
 		// x/y are set to when pinball is launched
@@ -566,6 +574,84 @@ export default class PinballScene extends Phaser.Scene {
 		return Math.random() * (max - min) + min;
 	}
 
+	createEvents() {
+		// events for when the pinball hits stuff
+		//Phaser.Physics.Matter.Matter.Events.on(engine, 'collisionStart', function(event) {
+		engine.event.on(engine, 'collisionStart', function(event) {
+			let pairs = event.pairs;
+			pairs.forEach(function(pair) {
+				if (pair.bodyB.label === 'pinball') {
+					switch (pair.bodyA.label) {
+						case 'reset':
+							this.launchPinball();
+							break;
+						case 'bumper':
+							this.pingBumper(pair.bodyA);
+							break;
+					}
+				}
+			});
+		});
+
+		// regulate pinball
+		Phaser.Physics.Matter.Matter.Events.on(engine, 'beforeUpdate', function(event) {
+			// bumpers can quickly multiply velocity, so keep that in check
+			Phaser.Physics.Matter.Matter.Body.setVelocity(pinball, {
+				x: Math.max(Math.min(pinball.velocity.x, MAX_VELOCITY), -MAX_VELOCITY),
+				y: Math.max(Math.min(pinball.velocity.y, MAX_VELOCITY), -MAX_VELOCITY),
+			});
+
+			// cheap way to keep ball from going back down the shooter lane
+			if (pinball.position.x > 450 && pinball.velocity.y > 0) {
+				Phaser.Physics.Matter.Matter.Body.setVelocity(pinball, { x: 0, y: -10 });
+			}
+		});
+
+		// // mouse drag (god mode for grabbing pinball)
+		// Phaser.Physics.Matter.Matter.World.add(world, Phaser.Physics.Matter.Matter.MouseConstraint.create(engine, {
+		// 	mouse: Phaser.Physics.Matter.Matter.Mouse.create(render.canvas),
+		// 	constraint: {
+		// 		stiffness: 0.2,
+		// 		render: {
+		// 			visible: false
+		// 		}
+		// 	}
+		// }));
+
+		// // keyboard paddle events
+		// $('body').on('keydown', function(e) {
+		// 	if (e.which === 37) { // left arrow key
+		// 		isLeftPaddleUp = true;
+		// 	} else if (e.which === 39) { // right arrow key
+		// 		isRightPaddleUp = true;
+		// 	}
+		// });
+		// $('body').on('keyup', function(e) {
+		// 	if (e.which === 37) { // left arrow key
+		// 		isLeftPaddleUp = false;
+		// 	} else if (e.which === 39) { // right arrow key
+		// 		isRightPaddleUp = false;
+		// 	}
+		// });
+
+		// // click/tap paddle events
+		// $('.left-trigger')
+		// 	.on('mousedown touchstart', function(e) {
+		// 		isLeftPaddleUp = true;
+		// 	})
+		// 	.on('mouseup touchend', function(e) {
+		// 		isLeftPaddleUp = false;
+		// 	});
+		// $('.right-trigger')
+		// .on('mousedown touchstart', function(e) {
+		// 		isRightPaddleUp = true;
+		// 	})
+		// 	.on('mouseup touchend', function(e) {
+		// 		isRightPaddleUp = false;
+		// 	});
+	}
+
+
 
 	create() {
 		//var graphics = this.add.graphics();
@@ -573,6 +659,7 @@ export default class PinballScene extends Phaser.Scene {
 		this.createStaticBodies();
 		this.createPaddles();
 		this.createPinball();
+		this.createEvents();
 	}
 
 	update() {
