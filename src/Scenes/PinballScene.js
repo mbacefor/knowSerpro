@@ -21,7 +21,7 @@ const COLOR = {
 	PADDLE: 0xe64980,
 	PINBALL: 0xdee2e6
 };
-const GRAVITY = 0.75;
+const GRAVITY = 0.25;
 const WIREFRAMES = false;
 const BUMPER_BOUNCE = 1.5;
 const PADDLE_PULL = 0.002;
@@ -254,7 +254,7 @@ export default class PinballScene extends Phaser.Scene {
 		// });
 
 		// // for some reason, restitution is reset unless it's set after body creation
-		// bumper.restitution = BUMPER_BOUNCE;
+		bumper.restitution = BUMPER_BOUNCE;
 		return bumper;
 	}
 
@@ -430,7 +430,7 @@ export default class PinballScene extends Phaser.Scene {
 		let paddleLeft = {};
 		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
 		paddleLeft.paddle = this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
-			isStatic: true,
+			isStatic: false,
 			label: 'paddleLeft',
 			angle: 1.57,
 			chamfer: {},
@@ -442,11 +442,11 @@ export default class PinballScene extends Phaser.Scene {
 		});
 
 		paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
-			isStatic: true,
+			isStatic: false,
 			angle: 1.62,
 			chamfer: {},
 			render: {
-				visible: false
+				visible: true
 			}
 		});
 		paddleLeft.comp = this.matter.body.create({
@@ -495,7 +495,7 @@ export default class PinballScene extends Phaser.Scene {
 			angle: -1.62,
 			chamfer: {},
 			render: {
-				visible: false
+				visible: true
 			}
 		});
 		paddleRight.comp = this.matter.body.create({
@@ -522,7 +522,7 @@ export default class PinballScene extends Phaser.Scene {
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		engine.world.add(world, [paddleRight.comp, paddleRight.hinge, paddleRight.con]);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
-		engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
+		//engine.body.rotate(paddleRight.comp, -0.57, { x: 308, y: 660 });
 	}
 	createPinball() {
 		// x/y are set to when pinball is launched
@@ -620,21 +620,23 @@ export default class PinballScene extends Phaser.Scene {
 		// 	}
 		// }));
 
-		// // keyboard paddle events
-		// $('body').on('keydown', function(e) {
-		// 	if (e.which === 37) { // left arrow key
-		// 		isLeftPaddleUp = true;
-		// 	} else if (e.which === 39) { // right arrow key
-		// 		isRightPaddleUp = true;
-		// 	}
-		// });
-		// $('body').on('keyup', function(e) {
-		// 	if (e.which === 37) { // left arrow key
-		// 		isLeftPaddleUp = false;
-		// 	} else if (e.which === 39) { // right arrow key
-		// 		isRightPaddleUp = false;
-		// 	}
-		// });
+		// keyboard paddle events
+		//$('body').on('keydown', function(e) {
+		this.input.keyboard.on('keydown', function(e) {
+			if (e.which === 37) { // left arrow key
+				isLeftPaddleUp = true;
+			} else if (e.which === 39) { // right arrow key
+				isRightPaddleUp = true;
+			}
+		});
+		//$('body').on('keyup', function(e) {
+		this.input.keyboard.on('keyup', function(e) {
+			if (e.which === 37) { // left arrow key
+				isLeftPaddleUp = false;
+			} else if (e.which === 39) { // right arrow key
+				isRightPaddleUp = false;
+			}
+		});
 
 		// // click/tap paddle events
 		// $('.left-trigger')
@@ -652,8 +654,6 @@ export default class PinballScene extends Phaser.Scene {
 		// 		isRightPaddleUp = false;
 		// 	});
 	}
-
-
 
 	create() {
 		//var graphics = this.add.graphics();

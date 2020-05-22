@@ -11,6 +11,9 @@ export default {
         wireframes: false,
         matter: {
             enableSleeping: false,
+            plugins: {
+                attractors: true
+            },
             gravity: {
                 y: 0
             },
