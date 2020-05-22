@@ -230,6 +230,7 @@ export default class PinballScene extends Phaser.Scene {
 		var poly = this.add.circle(x, y, 25, COLOR.BUMPER);
 		let bumper = this.matter.add.gameObject(poly, {
 			isStatic: true,
+			label: 'bumper',
 			shape: {
 				type: 'circle',
 				x: x,
@@ -331,6 +332,7 @@ export default class PinballScene extends Phaser.Scene {
 		var poly = this.add.rectangle(x, 781, width, 2, 0xfff);
 		return this.matter.add.gameObject(poly, {
 			isStatic: true,
+			label: 'reset',
 			shape: {
 				type: 'rectangle',
 				x: x,
@@ -420,14 +422,14 @@ export default class PinballScene extends Phaser.Scene {
 		rightDownStopper = this.stopper(310, 743, 'right', 'down');
 		//Phaser.Physics.Matter.Matter.World.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
 		engine.world.add(world, [leftUpStopper, leftDownStopper, rightUpStopper, rightDownStopper]);
-		
+
 		// this group lets paddle pieces overlap each other
 		let paddleGroup = Phaser.Physics.Matter.Matter.Body.nextGroup(true);
 
 		// Left paddle mechanism
 		let paddleLeft = {};
 		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
-		paddleLeft.paddle =  this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
+		paddleLeft.paddle = this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
 			isStatic: true,
 			label: 'paddleLeft',
 			angle: 1.57,
@@ -438,7 +440,7 @@ export default class PinballScene extends Phaser.Scene {
 				lineColor: COLOR.PADDLE
 			}
 		});
-		
+
 		paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
 			isStatic: true,
 			angle: 1.62,
@@ -462,7 +464,7 @@ export default class PinballScene extends Phaser.Scene {
 			piece.collisionFilter.group = paddleGroup
 		});
 		//paddleLeft.con = Phaser.Physics.Matter.Matter.Constraint.create({
-			paddleLeft.con = this.matter.constraint.create({
+		paddleLeft.con = this.matter.constraint.create({
 			bodyA: paddleLeft.comp,
 			pointA: { x: -29.5, y: -8.5 },
 			bodyB: paddleLeft.hinge,
@@ -525,7 +527,7 @@ export default class PinballScene extends Phaser.Scene {
 	createPinball() {
 		// x/y are set to when pinball is launched
 		//pinball = Phaser.Physics.Matter.Matter.Bodies.circle(0, 0, 14, {
-			pinball = engine.add.circle(0, 0, 14, {
+		pinball = engine.add.circle(0, 0, 14, {
 			label: 'pinball',
 			collisionFilter: {
 				group: stopperGroup
@@ -556,7 +558,7 @@ export default class PinballScene extends Phaser.Scene {
 
 		// flash color
 		bumper.render.fillStyle = COLOR.BUMPER_LIT;
-		setTimeout(function() {
+		setTimeout(function () {
 			bumper.render.fillStyle = COLOR.BUMPER;
 		}, 100);
 	}
@@ -577,16 +579,16 @@ export default class PinballScene extends Phaser.Scene {
 	createEvents() {
 		// events for when the pinball hits stuff
 		//Phaser.Physics.Matter.Matter.Events.on(engine, 'collisionStart', function(event) {
-		engine.event.on(engine, 'collisionStart', function(event) {
+		engine.world.on('collisionstart', function (event) {
 			let pairs = event.pairs;
-			pairs.forEach(function(pair) {
+			pairs.forEach(function (pair) {
 				if (pair.bodyB.label === 'pinball') {
 					switch (pair.bodyA.label) {
 						case 'reset':
-							this.launchPinball();
+							game.launchPinball();
 							break;
 						case 'bumper':
-							this.pingBumper(pair.bodyA);
+							game.pingBumper(pair.bodyA);
 							break;
 					}
 				}
@@ -594,7 +596,7 @@ export default class PinballScene extends Phaser.Scene {
 		});
 
 		// regulate pinball
-		Phaser.Physics.Matter.Matter.Events.on(engine, 'beforeUpdate', function(event) {
+		engine.world.on('beforeupdate', function (event) {
 			// bumpers can quickly multiply velocity, so keep that in check
 			Phaser.Physics.Matter.Matter.Body.setVelocity(pinball, {
 				x: Math.max(Math.min(pinball.velocity.x, MAX_VELOCITY), -MAX_VELOCITY),
