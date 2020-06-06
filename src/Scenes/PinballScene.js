@@ -1,7 +1,5 @@
 import 'phaser';
 
-
-
 // constants
 const PATHS = {
 	DOME: '0 0 0 250 19 250 20 231.9 25.7 196.1 36.9 161.7 53.3 129.5 74.6 100.2 100.2 74.6 129.5 53.3 161.7 36.9 196.1 25.7 231.9 20 268.1 20 303.9 25.7 338.3 36.9 370.5 53.3 399.8 74.6 425.4 100.2 446.7 129.5 463.1 161.7 474.3 196.1 480 231.9 480 250 500 250 500 0',
@@ -21,7 +19,7 @@ const COLOR = {
 	PADDLE: 0xe64980,
 	PINBALL: 0xdee2e6
 };
-const GRAVITY = 0.25;
+const GRAVITY = 0.75;
 const WIREFRAMES = false;
 const BUMPER_BOUNCE = 1.5;
 const PADDLE_PULL = 0.002;
@@ -428,8 +426,60 @@ export default class PinballScene extends Phaser.Scene {
 
 		// Left paddle mechanism
 		let paddleLeft = {};
+
+		paddleLeft.paddle = this.matter.add.image(170, 660, "paddleL",
+			{
+				label: 'paddleLeft' //,
+				//isStatic: true
+			});
+		
+		paddleLeft.paddle.setBody({
+			type: 'rectangle',
+			//x: 172, 
+			//y: 672,
+			//width: 80,
+			//height: 40
+			},
+			{
+				//angle: 1.62,
+				//chamfer: {},
+				render: {
+					visible: true
+				}
+			}
+		);
+		
+		//paddleLeft.paddle.setIgnoreGravity(false);
+		var poly2 = this.add.circle(142, 660, 5, COLOR.BUMPER);
+		paddleLeft.hinge = this.matter.add.gameObject(poly2, {
+			isStatic: true,
+			label: 'bumper',
+			shape: {
+				type: 'circle',
+				x: 142,
+				y: 660,
+				radius: 5,
+				flagInternal: false,
+				group: paddleGroup
+			},
+			render: {
+				fillStyle: COLOR.BUMPER,
+				lineColor: COLOR.BUMPER
+			}
+		},
+		).body;
+		this.matter.add.spring(paddleLeft.paddle,
+			paddleLeft.hinge,
+			0,
+			0,
+			{
+			 pointA: { x: -29.5, y: -8.5 },
+			});
+
+		//Phaser.Physics.Matter.Matter.Body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+
 		//paddleLeft.paddle =  Phaser.Physics.Matter.Matter.Bodies.trapezoid(170, 660, 20, 80, 0.33, {
-		paddleLeft.paddle = this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
+		/*paddleLeft.paddle = this.matter.add.trapezoid(170, 660, 20, 80, 0.33, {
 			isStatic: false,
 			label: 'paddleLeft',
 			angle: 1.57,
@@ -439,43 +489,84 @@ export default class PinballScene extends Phaser.Scene {
 				fillColor: COLOR.PADDLE,
 				lineColor: COLOR.PADDLE
 			}
-		});
+		});*/
 
-		paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
-			isStatic: false,
-			angle: 1.62,
-			chamfer: {},
+
+
+		//  However, you can tell it to create any size rectangle you like, such as this one:
+		//paddleLeft.paddle.setBody(paddleLeft.brick);
+
+
+		/*		var poly1 = this.add.rectangle(172, 672, 40, 80, COLOR.OUTER);
+				paddleLeft.brick = this.matter.add.gameObject(poly1, {
+					//isStatic: false,
+					angle: 1.62,
+					chamfer: {},
+					shape: {
+						type: 'rectangle',
+						x: 172,
+						y: 672,
+						width: 40,
+						height: 80,
+						flagInternal: false
+					},
+					render: {
+						fillStyle: COLOR.OUTER,
+						lineColor: COLOR.OUTER
+					}
+				},
+				).body;
+				//poly1.setOrigin(0.5, 1);
+				//paddleLeft.brick.setOrigin(0.5, 0);
+				engine.world.add(world, [paddleLeft.paddle, paddleLeft.brick]);
+		
+				/* 
+						paddleLeft.brick = this.matter.add.rectangle(172, 672, 40, 80, {
+							isStatic: false,
+							angle: 1.62,
+							chamfer: {},
+							render: {
+								visible: true
+							}
+						}); */
+
+
+		//		paddleLeft.comp = paddleLeft.paddle.setExistingBody(paddleLeft.hinge);
+		/*
+				paddleLeft.comp = this.matter.body.create({
+					isStatic: true,
+					label: 'paddleLeftComp',
+					parts: [paddleLeft.paddle, paddleLeft.brick],
+					inertia: Infinity
+				});*/
+
+		
+
+		/*paddleLeft.hinge = this.matter.add.circle(142, 660, 5, {
+			isStatic: true,
 			render: {
 				visible: true
 			}
-		});
-		paddleLeft.comp = this.matter.body.create({
-			isStatic: true,
-			label: 'paddleLeftComp',
-			parts: [paddleLeft.paddle, paddleLeft.brick]
-		});
-		paddleLeft.hinge = this.matter.add.circle(142, 660, 5, {
-			isStatic: true,
-			render: {
-				visible: true
-			}
-		});
-		Object.values(paddleLeft).forEach((piece) => {
-			piece.collisionFilter.group = paddleGroup
-		});
+		}); */
+		//Object.values(paddleLeft).forEach((piece) => {
+		//	piece.collisionFilter.group = paddleGroup
+		//});
 		//paddleLeft.con = Phaser.Physics.Matter.Matter.Constraint.create({
-		paddleLeft.con = this.matter.constraint.create({
+		/* paddleLeft.con = this.matter.constraint.create({
 			bodyA: paddleLeft.comp,
 			pointA: { x: -29.5, y: -8.5 },
 			bodyB: paddleLeft.hinge,
 			length: 0,
 			stiffness: 0
-		});
+		}); */
+
+		//  A spring, because length > 0 and stiffness < 0.9
+		
 		//Phaser.Physics.Matter.Matter.World.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
-		engine.world.add(world, [paddleLeft.comp, paddleLeft.hinge, paddleLeft.con]);
+		//		engine.world.add(world, [paddleLeft.comp, paddleLeft.hingen]);
 		//this.scene.physics.add.existing(paddleLeft.comp);
 		//Phaser.Physics.Matter.Matter.Body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
-		engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
+		//engine.body.rotate(paddleLeft.comp, 0.57, { x: 142, y: 660 });
 
 		// right paddle mechanism
 		let paddleRight = {};
@@ -622,7 +713,7 @@ export default class PinballScene extends Phaser.Scene {
 
 		// keyboard paddle events
 		//$('body').on('keydown', function(e) {
-		this.input.keyboard.on('keydown', function(e) {
+		this.input.keyboard.on('keydown', function (e) {
 			if (e.which === 37) { // left arrow key
 				isLeftPaddleUp = true;
 			} else if (e.which === 39) { // right arrow key
@@ -630,7 +721,7 @@ export default class PinballScene extends Phaser.Scene {
 			}
 		});
 		//$('body').on('keyup', function(e) {
-		this.input.keyboard.on('keyup', function(e) {
+		this.input.keyboard.on('keyup', function (e) {
 			if (e.which === 37) { // left arrow key
 				isLeftPaddleUp = false;
 			} else if (e.which === 39) { // right arrow key
